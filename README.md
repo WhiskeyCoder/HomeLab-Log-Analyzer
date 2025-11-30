@@ -35,6 +35,9 @@ Think of it as your homelab’s private Network God.
 
 **N8N triggers ➜ Python FastAPI pulls & filters logs ➜ LM Studio analyzes ➜ N8N emails results.**
 
+![N8N Dashboard](https://raw.githubusercontent.com/WhiskeyCoder/HomeLab-Log-Analyzer/refs/heads/main/images/n8n.png)
+
+
 ---
 
 ## ✨ Features at a Glance
@@ -119,6 +122,8 @@ Models supported:
 - 🟢 Overall homelab health
 
 Beautiful HTML formatting included.
+
+![Email Sample](https://raw.githubusercontent.com/WhiskeyCoder/HomeLab-Log-Analyzer/refs/heads/main/images/email.png)
 
 ---
 
