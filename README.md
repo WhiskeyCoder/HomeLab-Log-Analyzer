@@ -20,6 +20,11 @@ This tool automatically:
 
 Think of it as your homelab’s private Network God.
 
+Original Reddit Post - [https://www.reddit.com/r/homelab/comments/1p9f82c/this_is_a_good_use_of_an_llm/](https://www.reddit.com/r/homelab/comments/1p9f82c/this_is_a_good_use_of_an_llm/)
+
+Reddit Post of Release - [https://www.reddit.com/r/homelab/comments/1pa8d94/i_built_the_full_local_llm_logsummarizer_system/](https://www.reddit.com/r/homelab/comments/1pa8d94/i_built_the_full_local_llm_logsummarizer_system/)
+
+
 ---
 
 ## 🏗️ How It Works
