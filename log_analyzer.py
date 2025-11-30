@@ -9,11 +9,17 @@ import re
 
 app = FastAPI()
 
+# Add container names here
+MONITORED_CONTAINERS = [
+    # "container_name_1",
+    # "container_name_2",
+]
+
 class LogAnalysisRequest(BaseModel):
     containers: Optional[List[str]] = None
     hours: int = 24
     lm_studio_url: str = "http://localhost:1234/v1/completions"
-    model: str = "qwen2.5-1.5b-instruct"  # Lightweight model
+    model: str = "qwen2.5-1.5b-instruct"
 
 
 class LogAnalysisResponse(BaseModel):
@@ -30,14 +36,19 @@ class LogAnalyzer:
 
     def filter_noise(self, log_line: str) -> bool:
         noise_patterns = [
-            r'^\s*$',  # Empty lines
-            r'GET /health.*200',  # Health checks
-            r'HEAD /.*200',  # HEAD requests
-            r'.*heartbeat.*',  # Heartbeat messages
-            r'.*ping.*pong.*',  # Ping/pong
+            r'^\s*$',
+            r'GET /health.*200',
+            r'HEAD /.*200',
+            r'.*heartbeat.*',
+            r'.*ping.*pong.*',
         ]
         return not any(re.search(pattern, log_line, re.IGNORECASE)
                        for pattern in noise_patterns)
+
+    def is_monitored(self, container_name: str) -> bool:
+        if not MONITORED_CONTAINERS:
+            return True
+        return container_name in MONITORED_CONTAINERS
 
     def get_container_logs(self, container_name: str, since_hours: int) -> str:
         try:
@@ -65,6 +76,9 @@ class LogAnalyzer:
 
         for container in containers:
             name = container.name
+            if not self.is_monitored(name):
+                continue
+            
             logs = self.get_container_logs(name, since_hours)
             if logs and len(logs.strip()) > 0:
                 logs_dict[name] = logs
@@ -139,12 +153,11 @@ analyzer = LogAnalyzer()
 
 @app.post("/analyze", response_model=LogAnalysisResponse)
 async def analyze_logs(request: LogAnalysisRequest):
-    # Get logs
     if request.containers:
-        logs_dict = {
-            name: analyzer.get_container_logs(name, request.hours)
-            for name in request.containers
-        }
+        logs_dict = {}
+        for name in request.containers:
+            if analyzer.is_monitored(name):
+                logs_dict[name] = analyzer.get_container_logs(name, request.hours)
     else:
         logs_dict = analyzer.get_all_containers_logs(request.hours)
 
