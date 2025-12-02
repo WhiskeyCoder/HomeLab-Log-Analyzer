@@ -1,4 +1,4 @@
-# HomeLab Log Analyzer — Zero-Noise, AI-Powered Daily Summaries  
+# HomeLab Log Analyzer - Zero-Noise, AI-Powered Daily Summaries  
 A fully-local, fully-automated system that turns your chaotic Docker logs into clean, structured, actionable data... every night... powered by your own local LLM.
 
 No cloud.  
